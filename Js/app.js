@@ -29,7 +29,7 @@ document.querySelector('.btn-roll').addEventListener('click', btn) //addEventLis
 -----------------------------------------------------------------------*/
 //Query selectors are for classes and id's(we have to put the specific css selector) but getElementById is for id's only(we don't have to put the selector but the id name)
 
-var scores, roundScore, activePlayer, dice, gamePlaying;
+var scores, roundScore, activePlayer, dice, gamePlaying, winningScore;
 
 //Instead of initialize our variables generally, we create an initilization function which we call there
 init();
@@ -70,9 +70,20 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
     
     //Uplaod UI
     document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+        
+    var input = document.querySelector('.final-score').value; //we read the value(user has set) until which, the game is going to be played
+    var winningScore;
+        
+    //undefined, 0, null, or "" are corced to false
+    //anything else is true
+        if(input) { //we check if input is valid
+            winningScore = input;
+        } else {
+            winningScore = 100; //false cases
+        }
     
     //Check if player won the game
-    if (scores[activePlayer] >= 20) {
+    if (scores[activePlayer] >= winningScore) {
         document.querySelector('#name-' + activePlayer).textContent = 'You won!';
         document.querySelector('.dice').style.display = 'none';
         document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
@@ -114,6 +125,7 @@ function init() {
     activePlayer = 0;
     roundScore = 0;
     gamePlaying = true; //the state of the game 
+    winningScore = true;
     
 //Change the css of an element
 document.querySelector('.dice').style.display = 'none'; //we hide the dice when the game is not started yet
